@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
@@ -14,25 +13,26 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
 
 export const auth = getAuth(app);
-// used to get details of the user of the app who logged in.
 
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = () => {
-  signInWithPopup(auth, provider)
+  return signInWithPopup(auth, provider) // Return the promise
     .then((result) => {
-      const name = result.user.name;
+      const name = result.user.displayName; // Correctly get user's display name
       const email = result.user.email;
       const profile = result.user.photoURL;
 
       localStorage.setItem("name", name);
       localStorage.setItem("email", email);
       localStorage.setItem("profile", profile);
+
+      return true; // Return true on successful sign-in
     })
     .catch((error) => {
       console.log(error);
+      throw new Error(error.message); // Throw an error with the message
     });
 };
