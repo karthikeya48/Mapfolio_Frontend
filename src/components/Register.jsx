@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { auth, signInWithGoogle } from "../backend/firebase"; // Adjust the import path
+import { Link, useNavigate } from "react-router-dom";
+import { auth, signInWithGoogle } from "../backend/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 function Register() {
@@ -8,6 +8,7 @@ function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSignUpClick = async (e) => {
     e.preventDefault();
@@ -19,8 +20,8 @@ function Register() {
     }
 
     try {
-      // Sign up user with email and password
       await createUserWithEmailAndPassword(auth, email, password);
+      navigate("/welcome", { state: { email: auth.currentUser.email } });
       alert("User registered successfully!");
     } catch (err) {
       setError(err.message);
@@ -32,7 +33,7 @@ function Register() {
       {/* Left side */}
       <div className="left w-[50%] h-full bg-black flex justify-center items-center">
         <h1 className="text-white font-bold text-2xl">
-          Welcome to the MapFolio
+          Welcome to the Mapfolio
         </h1>
       </div>
 
@@ -79,14 +80,6 @@ function Register() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-[300px] h-[30px] mt-[10px] mb-[20px] border p-[20px] rounded-md"
           />
-
-          {/* Google Sign-up button */}
-          <button
-            onClick={signInWithGoogle}
-            className="text-white bg-black mt-[20px] h-[40px] p-2 rounded-sm"
-          >
-            Sign Up with Google
-          </button>
 
           {/* Regular sign-up button */}
           <button

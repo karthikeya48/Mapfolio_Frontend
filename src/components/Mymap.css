@@ -1,0 +1,40 @@
+.mapfolio-container {
+  display: flex;
+  height: 100vh;
+}
+
+.mapfolio-form-container {
+  width: 500px; /* Adjust the width of the form container */
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ccc;
+}
+
+.map-container {
+  flex: 1;
+}
+
+.mapfolio-form h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.mapfolio-form form div {
+  margin-bottom: 10px;
+}
+
+.mapfolio-form label {
+  display: block;
+  font-weight: bold;
+}
+
+.mapfolio-form input,
+.mapfolio-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+.mapfolio-form textarea {
+  height: 100px;
+}

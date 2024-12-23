@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,8 +14,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 export const auth = getAuth(app);
+export const db = getFirestore(app);
 
 const provider = new GoogleAuthProvider();
 
@@ -35,4 +36,13 @@ export const signInWithGoogle = () => {
       console.log(error);
       throw new Error(error.message); // Throw an error with the message
     });
+};
+
+export const sendDataToFirestore = async (collectionName, data) => {
+  try {
+    const docRef = await addDoc(collection(db, collectionName), data);
+    console.log("Document written with ID", docRef.id);
+  } catch (e) {
+    console.log("Error in sending:", e);
+  }
 };

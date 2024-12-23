@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { signInWithGoogle } from "../backend/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../backend/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // Use useNavigate for routing
+  const navigate = useNavigate();
+  // For routing purposes
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -20,7 +20,7 @@ function Auth() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("Sign-in successful!");
-      navigate("/welcome", { state: { email } }); // Navigate to welcome page with email
+      navigate("/welcome", { state: { email } });
     } catch (err) {
       setError(err.message);
     }
@@ -36,16 +36,12 @@ function Auth() {
     }
   };
 
-  const toggleEye = () => {
-    setShowPassword((prev) => !prev);
-  };
-
   return (
     <div className="flex h-screen">
       {/* Left side */}
       <div className="left w-[50%] h-full bg-black flex justify-center items-center">
         <h1 className="text-white font-bold text-2xl">
-          Welcome to the MapFolio
+          Welcome to the Mapfolio
         </h1>
       </div>
 
@@ -81,13 +77,6 @@ function Auth() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-[300px] h-[30px] mt-[10px] border p-[20px] rounded-md"
             />
-            <button
-              type="button"
-              onClick={toggleEye}
-              className="absolute top-[10px] right-[10px] cursor-pointer"
-            >
-              <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
-            </button>
           </div>
           <button
             onClick={handleGoogleSignIn}
