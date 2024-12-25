@@ -7,8 +7,8 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const GEO_API_KEY = import.meta.env.VITE_REVERSE_GEO_API;
 
 function Search({ setMarker, setLocation, setFormData }) {
-  const [inputValue, setInputValue] = useState(""); // Store user input
-  const [suggestions, setSuggestions] = useState([]); // Store suggestions
+  const [inputValue, setInputValue] = useState(""); 
+  const [suggestions, setSuggestions] = useState([]); 
   const [onfocus, setOnFocus] = useState(0);
   const map = useMap(); // Use map instance from Leaflet
 
@@ -66,7 +66,7 @@ function Search({ setMarker, setLocation, setFormData }) {
         console.error("Error fetching suggestions:", error);
       }
     } else {
-      setSuggestions([]); // Clear suggestions if input is too short
+      setSuggestions([]); 
     }
   };
 
@@ -91,7 +91,7 @@ function Search({ setMarker, setLocation, setFormData }) {
         type="text"
         value={inputValue}
         placeholder="Enter location"
-        onChange={handleInputChange} // Update inputValue on change
+        onChange={handleInputChange}
         className="w-full h-[50px] rounded-3xl bg-white text-gray-800 font-bold p-[20px] pr-[60px] focus:outline-none"
       />
       <button
