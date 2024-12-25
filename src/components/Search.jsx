@@ -7,10 +7,11 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const GEO_API_KEY = import.meta.env.VITE_REVERSE_GEO_API;
 
 function Search({ setMarker, setLocation, setFormData }) {
-  const [inputValue, setInputValue] = useState(""); // Store user input
-  const [suggestions, setSuggestions] = useState([]); // Store suggestions
+  const [inputValue, setInputValue] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const [onfocus, setOnFocus] = useState(0);
-  const map = useMap(); // Use map instance from Leaflet
+
+  const map = useMap();
 
   const handleSearch = async () => {
     const location = inputValue;
@@ -28,7 +29,7 @@ function Search({ setMarker, setLocation, setFormData }) {
 
         const { lat, lng } = response.data.results[0]?.geometry || {};
         if (lat && lng) {
-          map.flyTo([lat, lng], 13); // Fly to the location on the map
+          map.flyTo([lat, lng], 13);
           setMarker([lat, lng]);
           setLocation(location);
 
@@ -66,24 +67,22 @@ function Search({ setMarker, setLocation, setFormData }) {
         console.error("Error fetching suggestions:", error);
       }
     } else {
-      setSuggestions([]); // Clear suggestions if input is too short
+      setSuggestions([]);
     }
   };
 
   const handleSuggestionClick = (suggestion) => {
     const { lat, lng, formatted } = suggestion.geometry;
-    map.flyTo([lat, lng], 13); // Fly to the selected suggestion
+    map.flyTo([lat, lng], 13);
     setMarker([lat, lng]);
     setLocation(formatted);
     setFormData((prevState) => ({
       ...prevState,
       location: formatted,
     }));
-    setInputValue(formatted); // Set input value to the selected suggestion
-    setSuggestions([]); // Clear suggestions after selection
+    setInputValue(formatted);
+    setSuggestions([]);
   };
-
-  // const showSuge
 
   return (
     <div className="relative w-[300px] z-[1000]">
@@ -91,7 +90,7 @@ function Search({ setMarker, setLocation, setFormData }) {
         type="text"
         value={inputValue}
         placeholder="Enter location"
-        onChange={handleInputChange} // Update inputValue on change
+        onChange={handleInputChange}
         className="w-full h-[50px] rounded-3xl bg-white text-gray-800 font-bold p-[20px] pr-[60px] focus:outline-none"
       />
       <button
