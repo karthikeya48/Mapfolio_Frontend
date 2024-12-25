@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../backend/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import Typewriter from "typewriter-effect";
 
 function Auth() {
   const [email, setEmail] = useState("");
@@ -41,7 +43,15 @@ function Auth() {
       {/* Left side */}
       <div className="left w-[50%] h-full bg-black flex justify-center items-center">
         <h1 className="text-white font-bold text-2xl">
-          Welcome to the Mapfolio
+          <Typewriter
+            options={{
+              strings: ["Welcome to the Mapfolio", "Get started by signing in"],
+              autoStart: true,
+              loop: true,
+              // deleteSpeed: 0,
+              delay: 50,
+            }}
+          />
         </h1>
       </div>
 
@@ -54,6 +64,11 @@ function Auth() {
             Register
           </Link>
         </h2>
+        <FontAwesomeIcon
+          icon="fa-brands fa-google"
+          fade
+          style={{ color: "#74C0FC" }}
+        />
 
         {/* Login form */}
         <div className="login flex flex-col">
@@ -78,19 +93,25 @@ function Auth() {
               className="w-[300px] h-[30px] mt-[10px] border p-[20px] rounded-md"
             />
           </div>
-          <button
-            onClick={handleGoogleSignIn}
-            className="flex items-center justify-center text-white bg-black mt-[20px] h-[40px] p-2 rounded-sm"
-            aria-label="Sign in with Google"
-          >
-            <i className="fab fa-google mr-2"></i>
-            Sign in with Google
-          </button>
+
           <button
             onClick={handleSignIn}
             className="text-white bg-black mt-[20px] h-[40px] p-2 rounded-sm"
           >
             Sign in
+          </button>
+          <button
+            onClick={handleGoogleSignIn}
+            className="flex items-center justify-center text-white bg-black mt-[20px] h-[40px] p-2 rounded-sm"
+            aria-label="Sign in with Google"
+          >
+            <FontAwesomeIcon
+              icon={faGoogle}
+              fade
+              style={{ color: "#74C0FC" }}
+            />
+            <i className="fab fa-google mr-2"></i>
+            Sign in with Google
           </button>
         </div>
       </div>

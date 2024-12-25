@@ -5,7 +5,8 @@ import "./Mymap.css";
 import { getAuth } from "firebase/auth";
 import { sendDataToFirestore } from "../backend/firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Search from "./Search.jsx";
 import {
   MapContainer,
   TileLayer,
@@ -88,6 +89,17 @@ function MapfolioForm({ formData, setFormData }) {
   return (
     <div className="mapfolio-form">
       <h2>Mapfolio</h2>
+      <FontAwesomeIcon
+        icon={faArrowLeft}
+        style={{
+          position: "absolute",
+          top: "100px",
+          left: "20px",
+          zIndex: 1000,
+          fontSize: "24px",
+          color: "gray",
+        }}
+      />
       <form>
         <div>
           <label>Name the place:</label>
@@ -235,17 +247,6 @@ function MyMap() {
 
   return (
     <div className="mapfolio-container">
-      <FontAwesomeIcon
-        icon={faSearch}
-        style={{
-          position: "absolute",
-          top: "100px",
-          right: "20px",
-          zIndex: 1000,
-          fontSize: "24px",
-          color: "gray",
-        }}
-      />
       {/* <Searchgeolocation setMarker={setMarker} setLocation={setLocation} map = {}/> */}
       <button
         className="profile-button"
@@ -265,17 +266,25 @@ function MyMap() {
       >
         Profile
       </button>
-      {showAddLocation && (
-        <div className="mapfolio-form-container">
-          <MapfolioForm formData={formData} setFormData={setFormData} />
-        </div>
-      )}
+      {/* Make an update here for testing */}
+      {showAddLocation &&
+        // <div className="mapfolio-form-container">
+        //   <MapfolioForm formData={formData} setFormData={setFormData} />
+        // </div>
+        null}
       <div className="map-container">
         <MapContainer
           center={[51.505, -0.09]}
-          zoom={13}
+          zoom={10}
           style={{ height: "100vh", width: "100%" }}
         >
+          <div className="absolute top-[20px] left-[60px] z-[1000] 2-[300px]">
+            <Search
+              // setMarker={setMarker}
+              setLocation={setLocation}
+              setFormData={setFormData}
+            />
+          </div>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <LocationFinder
             setMarker={setMarker}

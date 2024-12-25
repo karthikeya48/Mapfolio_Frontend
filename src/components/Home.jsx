@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Typewriter from "typewriter-effect";
 function Home() {
   const navigate = useNavigate();
   const handleGetStarted = () => {
@@ -12,7 +13,7 @@ function Home() {
           You travel the World
         </h1>
         <h2 className=" text-blue-50 font-bold text-3xl">
-          Mapfolio Let we track you adventure
+          Mapfolio Let we track your adventure
         </h2>
         <h3 className="text-gray-400 font-medium text-xl w-[900px]">
           A world map that tracks your footsteps into every city you can think
@@ -21,7 +22,7 @@ function Home() {
         </h3>
 
         <button
-          className="w-[120px] p-[10px] rounded-md bg-green-600"
+          className="w-[120px] p-[10px] rounded-md bg-blue-500 hover:bg-blue-700 hover:scale-110 hover:-translate-y-1 transition-transform duration-200 ease-out"
           onClick={handleGetStarted}
         >
           GetStarted
