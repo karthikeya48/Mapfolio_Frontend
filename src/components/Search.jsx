@@ -7,13 +7,8 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 const GEO_API_KEY = import.meta.env.VITE_REVERSE_GEO_API;
 
 function Search({ setMarker, setLocation, setFormData }) {
-<<<<<<< HEAD
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-=======
-  const [inputValue, setInputValue] = useState(""); 
-  const [suggestions, setSuggestions] = useState([]); 
->>>>>>> 23ba5e8a8393b04a40cca52289058824fe3993c0
   const [onfocus, setOnFocus] = useState(0);
 
   const map = useMap();
@@ -72,11 +67,7 @@ function Search({ setMarker, setLocation, setFormData }) {
         console.error("Error fetching suggestions:", error);
       }
     } else {
-<<<<<<< HEAD
       setSuggestions([]);
-=======
-      setSuggestions([]); 
->>>>>>> 23ba5e8a8393b04a40cca52289058824fe3993c0
     }
   };
 
