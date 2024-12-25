@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Typewriter from "typewriter-effect";
+
 function Home() {
   const navigate = useNavigate();
   const handleGetStarted = () => {

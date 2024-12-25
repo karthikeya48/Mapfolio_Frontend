@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Mymap.css";
+import "../styles/Mymap.css";
+
 import { getAuth } from "firebase/auth";
 import { sendDataToFirestore } from "../backend/firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

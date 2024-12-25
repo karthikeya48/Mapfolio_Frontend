@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDocs, query, where, collection } from "firebase/firestore";
 import { db } from "../backend/firebase"; // Replace with your Firebase config
-import "./Dashboard.css"; // Optional: Add styles
+import "../styles/Dashboard.css"; // Optional: Add styles
 
 function Dashboard({ user }) {
   const [places, setPlaces] = useState([]);
