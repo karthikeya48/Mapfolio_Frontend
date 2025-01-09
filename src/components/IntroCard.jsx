@@ -1,25 +1,18 @@
-import TypewriterComponent from "typewriter-effect";
-import { auth } from "../backend/firebase";
-function IntroCard() {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+
+function IntroCard({ setOpencard }) {
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="w-[500px] h-[300px] bg-[#2c322f] rounded-3xl ">
-        <h1 className=" relative top-[20px] left-[20px] text-white font-medium ">
-          Hi,{" "}
-          <span className="text-blue-400">{auth.currentUser.displayName}</span>
+      <div className="relative w-[500px] h-[200px] bg-[#2c322f] rounded-3xl p-6 flex flex-col justify-between">
+        <h1 className="text-white text-center mb-6">
+          Get started to track your adventure by clicking on the map !!
         </h1>
-        <h2 className="relative top-[30px] left-[20px] text-white font-medium">
-          Welcome to mapfolio
-        </h2>
-        <h3 className="relative top-[40px] left-[20px] text-white font-medium">
-          Get started for making your memories noted of the <br />
-          places that you have travelled.
-        </h3>
-        <h4 className="relative top-[50px] left-[20px] text-white font-medium">
-          Click on to the map to get the location on to your memories.
-        </h4>
-        <button className="relative mt-8 text-white bg-blue-500 left-[20px] top-[60px] px-4 py-2 rounded-md hover:bg-blue-700">
-          Get Started
+        <button
+          onClick={() => setOpencard(false)}
+          className="self-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 hover:scale-110 hover:-translate-y-1 transition-transform duration-200 ease-out"
+        >
+          Get started
         </button>
       </div>
     </div>

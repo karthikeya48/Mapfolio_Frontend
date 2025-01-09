@@ -6,7 +6,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const GEO_API_KEY = import.meta.env.VITE_REVERSE_GEO_API;
 
-function Search({ setMarker, setLocation, setFormData }) {
+function Search({ setMarker, setLocation, setFormData, setSearchInUse }) {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [onfocus, setOnFocus] = useState(0);
@@ -91,7 +91,13 @@ function Search({ setMarker, setLocation, setFormData }) {
         value={inputValue}
         placeholder="Enter location"
         onChange={handleInputChange}
-        className="w-full h-[50px] rounded-3xl bg-white text-gray-800 font-bold p-[20px] pr-[60px] focus:outline-none"
+        onFocus={() => {
+          setSearchInUse(1);
+        }}
+        onBlur={() => {
+          setSearchInUse(0);
+        }}
+        className="w-full h-[50px] rounded-3xl bg-white text-gray-800 font-bold p-[20px] pr-[60px] focus:outline-non"
       />
       <button
         onClick={handleSearch}
@@ -107,7 +113,7 @@ function Search({ setMarker, setLocation, setFormData }) {
             <div
               key={index}
               onClick={() => handleSuggestionClick(suggestion)}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-200"
+              className="p-[10px]  cursor-pointer hover:bg-gray-200"
             >
               {suggestion.formatted}
             </div>
