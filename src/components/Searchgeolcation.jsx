@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import PropTypes from "propTypes";
 export function Searchgeolocation({ setMarker, setLocation, map }) {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -71,3 +72,9 @@ export function Searchgeolocation({ setMarker, setLocation, map }) {
     </div>
   );
 }
+
+Searchgeolocation.propTypes = {
+  setMarker: PropTypes.func.isRequired,
+  setLocation: PropTypes.func.isRequired,
+  map: PropTypes.func.isRequrired,
+};

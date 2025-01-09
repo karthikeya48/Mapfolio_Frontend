@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from "../backend/firebase";
-// import { signInWithGoogle } from "../backend/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 function Register() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,7 +17,7 @@ function Register() {
     try {
       await signInWithGoogle();
       alert("Google sign-in successful!");
-      navigate("/welcome", { state: { email: auth.currentUser.email } }); // Get email from Firebase auth
+      navigate("/welcome", { state: { email: auth.currentUser.email } });
     } catch (err) {
       setError(err.message);
     }
@@ -32,10 +32,28 @@ function Register() {
       return;
     }
 
+    if (!username.trim()) {
+      setError("Username cannot be empty!");
+      return;
+    }
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/welcome", { state: { email: auth.currentUser.email } });
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // Update user's profile with the username
+      await updateProfile(userCredential.user, {
+        displayName: username,
+      });
+
       alert("User registered successfully!");
+      navigate("/welcome", {
+        state: { email: userCredential.user.email, username },
+      });
     } catch (err) {
       setError(err.message);
     }
@@ -63,6 +81,16 @@ function Register() {
         {/* Registration form */}
         <div className="register flex flex-col">
           {error && <p style={{ color: "red" }}>{error}</p>}
+          {/* 
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Enter your username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="group w-[300px] h-[30px] mt-[10px] mb-[10px] border p-[20px] rounded-md"
+          />
 
           <label htmlFor="email">Email</label>
           <input
@@ -71,7 +99,7 @@ function Register() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="group w-[300px] h-[30px] mt-[10px] mb-[20px] border p-[20px] rounded-md"
+            className="group w-[300px] h-[30px] mt-[10px] mb-[10px] border p-[20px] rounded-md"
           />
 
           <label htmlFor="password">Password</label>
@@ -81,7 +109,7 @@ function Register() {
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-[300px] h-[30px] mt-[10px] border p-[20px] rounded-md"
+            className="w-[300px] h-[30px] mt-[10px] mb-[10px]  border p-[20px] rounded-md"
           />
 
           <label htmlFor="confirmPassword">Confirm Password</label>
@@ -93,25 +121,26 @@ function Register() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-[300px] h-[30px] mt-[10px] mb-[20px] border p-[20px] rounded-md"
           />
-          <button
-            onClick={handleGoogleSignIn}
-            className="flex items-center justify-center text-white bg-black mt-[20px] h-[40px] p-2 rounded-sm"
-            aria-label="Sign in with Google"
-          >
-            <FontAwesomeIcon
-              icon={faGoogle}
-              fade
-              style={{ color: "#74C0FC" }}
-            />
-            <i className="fab fa-google mr-2"></i>
-            Sign in with Google
-          </button>
-          {/* Regular sign-up button */}
+
           <button
             onClick={handleSignUpClick}
             className="text-white bg-black mt-[20px] h-[40px] p-2 rounded-sm"
           >
             Sign Up
+          </button> */}
+
+          <button
+            onClick={handleGoogleSignIn}
+            className="flex items-center justify-center text-white bg-black mt-[20px] h-[40px] w-[240px] p-[10px] rounded-sm"
+            aria-label="Sign in with Google"
+          >
+            <FontAwesomeIcon
+              icon={faGoogle}
+              fade
+              className="mr-[10px]"
+              style={{ color: "#74C0FC" }}
+            />
+            Sign in with Google
           </button>
         </div>
       </div>
