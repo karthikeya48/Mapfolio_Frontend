@@ -1,12 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { signInWithGoogle } from "../backend/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../backend/firebase";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import Typewriter from "typewriter-effect";
@@ -17,34 +13,7 @@ function Auth() {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const [lastActiveTime, setLastActiveTime] = useState(Date.now()); // Track user activity time
-
-  // Session timeout duration (e.g., 30 minutes)
-  const SESSION_TIMEOUT = 30 * 60 * 1000;
-
-  useEffect(() => {
-    // Check for session timeout on every render and after user activity
-    const checkSessionTimeout = () => {
-      const currentTime = Date.now();
-      if (currentTime - lastActiveTime > SESSION_TIMEOUT) {
-        signOut(auth) // Log out user if session has expired
-          .then(() => {
-            navigate("/login"); // Redirect to login page
-          })
-          .catch((error) => {
-            console.error("Error signing out:", error);
-          });
-      }
-    };
-
-    const intervalId = setInterval(checkSessionTimeout, 60000); // Check every 60 seconds
-    return () => clearInterval(intervalId); // Clean up the interval on component unmount
-  }, [lastActiveTime, navigate]);
-
-  // Handle activity reset on user interaction
-  const handleUserActivity = () => {
-    setLastActiveTime(Date.now()); // Update the last active time
-  };
+  // For routing purposes
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -63,25 +32,14 @@ function Auth() {
     try {
       await signInWithGoogle();
       alert("Google sign-in successful!");
-      navigate("/welcome", { state: { email: auth.currentUser.email } });
+      navigate("/welcome", { state: { email: auth.currentUser.email } }); // Get email from Firebase auth
     } catch (err) {
       setError(err.message);
     }
   };
 
-  // Listen for authentication state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setLastActiveTime(Date.now()); // Reset the session timer on login
-      }
-    });
-
-    return unsubscribe; // Clean up the listener on component unmount
-  }, []);
-
   return (
-    <div className="flex h-screen" onClick={handleUserActivity}>
+    <div className="flex h-screen">
       {/* Left side */}
       <div className="left w-[50%] h-full bg-black flex justify-center items-center">
         <h1 className="text-white font-bold text-2xl">
@@ -90,6 +48,7 @@ function Auth() {
               strings: ["Welcome to the Mapfolio", "Get started by signing in"],
               autoStart: true,
               loop: true,
+              // deleteSpeed: 0,
               delay: 40,
             }}
           />
