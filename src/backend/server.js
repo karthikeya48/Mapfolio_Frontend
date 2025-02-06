@@ -142,7 +142,7 @@ app.post("/webhook", async (req, res) => {
   const messageSid = req.body.SmsMessageSid;
   const msgFrom = req.body.From;
   const msgBody = req.body.Body?.trim().toLowerCase();
-  const imageUrl = req.body.MediaUrl0; // WhatsApp image URL
+  const imageUrl = req.body.MediaUrl0;
 
   const userQuery = await db
     .collection("users")
@@ -162,7 +162,7 @@ app.post("/webhook", async (req, res) => {
 
   if (!userSessions[msgFrom]) {
     if (msgBody.includes("add a memory")) {
-      userSessions[msgFrom] = { step: "title", images: [] }; // Initialize images array
+      userSessions[msgFrom] = { step: "title", images: [] };
       return sendReply(
         msgFrom,
         "Great! Send me the title of your memory.",
