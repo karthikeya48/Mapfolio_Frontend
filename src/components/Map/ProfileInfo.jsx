@@ -44,14 +44,11 @@ export default function ProfileInfo() {
   const handleSendOtp = async () => {
     console.log("Sending OTP to:", mobileNumber);
     try {
-      const response = await fetch(
-        "https://1767-2401-4900-3602-7fa7-c534-604b-fb8e-daad.ngrok-free.app/sendotp",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mobileNumber: mobileNumber }),
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_OTP_URL}/sendotp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mobileNumber: mobileNumber }),
+      });
 
       if (response.ok) {
         alert("OTP sent successfully");
@@ -67,7 +64,7 @@ export default function ProfileInfo() {
     console.log("Verifying OTP for:", mobileNumber);
     try {
       const response = await fetch(
-        "https://1767-2401-4900-3602-7fa7-c534-604b-fb8e-daad.ngrok-free.app/verifyotp",
+        `${import.meta.env.VITE_OTP_URL}/verifyotp`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
