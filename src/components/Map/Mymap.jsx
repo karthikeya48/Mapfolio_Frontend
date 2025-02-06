@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../backend/firebase.js";
-import "../../styles/MyMap.css";
+// import "../../styles/MyMap.css";
 import Upload from "./Upload.jsx";
 import Search from "./Search.jsx";
 
