@@ -10,16 +10,17 @@ import {
 } from "firebase/firestore";
 import "tailwindcss/tailwind.css";
 import { useNavigate } from "react-router-dom";
-
+import Profileinfo from "./Map/ProfileInfo";
 export default function Dashboard() {
   const [memories, setMemories] = useState([]);
   const [filteredMemories, setFilteredMemories] = useState([]);
-  // const [images, setImages] = useState([]);
   const [selectedMemory, setSelectedMemory] = useState(null);
   const [updatedNotes, setUpdatedNotes] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [currentCoverImageIndex, setCurrentCoverImageIndex] = useState(0); // Track current cover image
-  const [searchTerm, setSearchTerm] = useState(""); // State to store search term
+  const [searchTerm, setSearchTerm] = useState("");
+  // State for mobile number input
+  // Flag for
   const user = getAuth().currentUser;
   const db = getFirestore();
   const navigate = useNavigate();
@@ -34,8 +35,9 @@ export default function Dashboard() {
             id: doc.id,
             ...doc.data(),
           }));
+          console.log(tripsList);
           setMemories(tripsList);
-          setFilteredMemories(tripsList); // Initialize with all memories
+          setFilteredMemories(tripsList);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -93,7 +95,6 @@ export default function Dashboard() {
   const updateMemory = async () => {
     if (selectedMemory && selectedMemory.id) {
       try {
-        // Reference to the document in Firestore
         const memoryRef = doc(
           db,
           "users",
@@ -125,13 +126,13 @@ export default function Dashboard() {
 
   const nextImage = () => {
     setCurrentCoverImageIndex(
-      (prevIndex) => (prevIndex + 1) % selectedMemory?.images.length
+      (prevIndex) => (prevIndex + 1) % selectedMemory?.images?.length
     );
   };
 
   const prevImage = () => {
     setCurrentCoverImageIndex((prevIndex) =>
-      prevIndex === 0 ? selectedMemory?.images.length - 1 : prevIndex - 1
+      prevIndex === 0 ? selectedMemory?.images?.length - 1 : prevIndex - 1
     );
   };
 
@@ -163,11 +164,11 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="ml-10 mr-10">
-          <h1 className="text-3xl font-extrabold">{selectedMemory.name}</h1>
+          <h1 className="text-3xl font-extrabold">{selectedMemory?.name}</h1>
           <div className="mt-[5px] relative">
             <img
-              src={selectedMemory.images[currentCoverImageIndex]}
-              alt={selectedMemory.name}
+              src={selectedMemory?.images?.[currentCoverImageIndex] || ""}
+              alt={selectedMemory?.name}
               className="w-full h-[80vh] object-cover rounded-xl transition-transform duration-500 ease-in-out"
             />
             <div className="absolute top-1/2 left-0 right-0 flex justify-between px-4">
@@ -189,7 +190,7 @@ export default function Dashboard() {
           <div className="mt-5">
             <div>
               <h1 className="text-2xl mb-[24px] font-extrabold">Location </h1>
-              <p className="text-xl mb-[24px]">{selectedMemory.location}</p>
+              <p className="text-xl mb-[24px]">{selectedMemory?.location}</p>
             </div>
             <h1 className="text-2xl mb-[24px] font-extrabold">Description</h1>
             {isEditing ? (
@@ -231,7 +232,7 @@ export default function Dashboard() {
           </div>
           <h2 className="mt-5 font-extrabold text-2xl"> Images</h2>
           <div className="grid grid-cols-2 gap-4 mt-4">
-            {selectedMemory.images.map((image, index) => (
+            {selectedMemory?.images?.map((image, index) => (
               <img
                 key={index}
                 src={image}
@@ -244,10 +245,7 @@ export default function Dashboard() {
           {/* Delete button */}
           <div className="mt-4 mb-4 ">
             <button
-              onClick={() => deleteMemory(selectedMemory.id)}
-              onMouseEnter={() => {
-                alert("The memory will be deleted on clicking the button");
-              }}
+              onClick={() => deleteMemory(selectedMemory?.id)}
               className="px-6 py-2 bg-red-600 text-white rounded-md  mb-6"
             >
               Delete Memory
@@ -259,51 +257,63 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white font-sans">
-      <div className="bg-black min-h-screen flex flex-col justify-center">
+    <div className="bg-black min-h-screen text-white font-sans flex">
+      {/* Profile Info */}
+      {/* <Profileinfo /> */}
+      <div className="bg-black min-h-screen flex flex-col  justify-center px-6">
+        {/* Back Button */}
         <div className="absolute top-4 left-4">
-          <button onClick={handleDashClose} className="text-blue-500">
-            Back to map
+          <button
+            onClick={handleDashClose}
+            className="text-blue-500 text-lg font-semibold hover:underline transition-all duration-200"
+          >
+            Back to Map
           </button>
         </div>
-        <h1 className="mt-10 text-2xl font-extrabold flex justify-center">
-          Here are your-{" "}
-          <span className="text-blue-500"> Mapfolio Memories</span>
+
+        {/* Title */}
+        <h1 className="mt-16 text-3xl font-extrabold text-center">
+          Here are your <span className="text-blue-500">Mapfolio Memories</span>
         </h1>
-        {/* Search bar */}
-        <div className="mt-5 flex justify-center">
+
+        {/* Search Bar */}
+        <div className="mt-8 flex justify-center">
           <input
             type="text"
             placeholder="Search by title"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="p-3 rounded-lg text-white border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 placeholder-gray-400 w-80"
+            className="p-4 rounded-lg text-white border-2 border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 placeholder-gray-400 w-full md:w-96"
           />
         </div>
 
-        <div className="m-[50px] grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredMemories.length > 0 ? (
-            filteredMemories.map((memory, index) => (
-              <div
-                key={index}
-                className="bg-gray-800 text-white mt-10 rounded-2xl w-full h-[400px] transform transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/50 cursor-pointer"
-                onClick={() => handleCardClick(memory)}
-              >
-                <img
-                  src={memory.images[0]}
-                  alt={memory.name}
-                  className="rounded-t-2xl w-full h-[250px] object-cover"
-                />
-                <div className="p-4">
-                  <h2 className="text-xl font-semibold text-blue-400">
-                    {memory.name}
-                  </h2>
-                  <p className="text-sm text-gray-300">{memory.location}</p>
-                </div>
-              </div>
-            ))
+        {/* Memories */}
+        <div className="mt-10">
+          {filteredMemories.length === 0 ? (
+            <p className="text-center text-xl">No memories found</p>
           ) : (
-            <div>No memories found</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filteredMemories.map((memory) => (
+                <div
+                  key={memory.id}
+                  className="bg-gray-800 rounded-lg shadow-lg p-4"
+                >
+                  <img
+                    src={memory.coverImage}
+                    alt={memory.name}
+                    className="w-full h-[200px] object-cover rounded-md mb-4"
+                  />
+                  <h3 className="text-lg font-semibold">{memory.name}</h3>
+                  <p className="text-sm text-gray-400">{memory.location}</p>
+                  <button
+                    onClick={() => handleCardClick(memory)}
+                    className="mt-4 text-blue-500 hover:underline"
+                  >
+                    View Details
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import frontImage from "../assets/Front.png";
+import frontImage from "../../assets/Front.png";
 // import Typewriter from "typewriter-effect";
 
 function Home() {

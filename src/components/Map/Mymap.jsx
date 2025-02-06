@@ -1,29 +1,30 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db } from "../backend/firebase";
-import "../styles/Mymap.css";
+import { db } from "../../backend/firebase.js";
+import "../../styles/MyMap.css";
 import Upload from "./Upload.jsx";
 import Search from "./Search.jsx";
-// import IntroCard from "./IntroCard.jsx";
+
 import GeoLocationButton from "./GeoLocationButton.jsx";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import LocationFinder from "./LocationFinder.jsx";
 import { getAuth } from "firebase/auth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import profileImg from "../assets/profile.png";
+import profileImg from "../../assets/profile.png";
+import { useAuth } from "../Auth/Authprovider.jsx";
 
 function MyMap() {
   const [marker, setMarker] = useState(null);
   const [markers, setMarkers] = useState([]);
   const [showAddLocation, setShowAddLocation] = useState(false);
   const [searchInUse, setSearchInUse] = useState(0);
-  // const [Opencard, setOpencard] = useState(1);
   const [hoveredMarker, setHoveredMarker] = useState(null);
   const [showFullScreen, setShowFullScreen] = useState(0);
   const [location, setLocation] = useState("Click on the map to get location");
-
+  const [userData, setUserData] = useState(null);
+  const [isOpen, setOpen] = useState(0);
   const [formData, setFormData] = useState({
     name: "",
     location: "",
@@ -35,6 +36,7 @@ function MyMap() {
   });
 
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     // Check if the user has seen the login message already
@@ -68,17 +70,26 @@ function MyMap() {
           return;
         }
 
+        setUserData({
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+        });
+
         const userId = user.uid;
         const userTripsRef = collection(db, "users", userId, "trips"); // Reference to user's trips collection
 
         const querySnapshot = await getDocs(userTripsRef); // Fetch the documents from user's trips collection
         const fetchedMarkers = [];
+
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          fetchedMarkers.push({
-            id: doc.id,
-            ...data,
-          });
+          if (data.latitude !== undefined && data.longitude !== undefined) {
+            fetchedMarkers.push({
+              id: doc.id,
+              ...data,
+            });
+          }
         });
 
         setMarkers(fetchedMarkers); // Update state with fetched markers
@@ -89,7 +100,6 @@ function MyMap() {
 
     fetchMarkers();
   }, []);
-
   return (
     <>
       <div className="flex h-[100vh]">
@@ -121,12 +131,48 @@ function MyMap() {
 
         <div className="flex-1 relative h-screen w-full">
           {!showFullScreen && (
-            <div className="absolute top-4 right-4 z-[1000]">
-              <button
-                onClick={() => navigate("/dashboard")}
-                style={{ backgroundImage: `url(${profileImg})` }}
-                className="w-16 h-16 bg-cover bg-center p-6 rounded-full shadow-md transition-transform transform hover:scale-110"
-              ></button>
+            <div className="relative">
+              <div className="absolute top-6 right-[80px] z-[1000]">
+                <button
+                  // () => navigate("/dashboard")
+                  onClick={() => {
+                    setOpen(!isOpen);
+                  }}
+                  style={{
+                    backgroundImage: `url(${user.photoURL || profileImg})`,
+                  }}
+                  className="w-10 h-10 bg-cover bg-center p-6 rounded-full shadow-md transition-transform transform hover:scale-110"
+                ></button>
+              </div>
+              {isOpen ? (
+                <div className="absolute align right-[10px] top-[80px]   bg-gray-900 p-4 rounded-lg shadow-lg w-[200px] h-[150px] z-[1000]">
+                  <button
+                    onClick={() => {
+                      navigate("/dashboard");
+                    }}
+                    className="w-full  py-2 text-white hover:bg-gray-700 rounded-lg"
+                  >
+                    Dashboard
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/profileInfo");
+                    }}
+                    className="w-full text-center py-2 text-white hover:bg-gray-700 rounded-lg"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={async () => {
+                      await logout();
+                      navigate("/login");
+                    }}
+                    className="w-full text-center py-2 text-white hover:bg-gray-700 rounded-lg"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : null}
             </div>
           )}
 
@@ -136,13 +182,14 @@ function MyMap() {
             className="h-full w-full"
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <div className="absolute top-[20px] left-[60px]">
+            <div className="hidden sm:block md:absolute top-[20px] left-[60px]">
               <Search
                 setLocation={setLocation}
                 setFormData={setFormData}
                 setSearchInUse={setSearchInUse}
               />
             </div>
+
             <LocationFinder
               searchInUse={searchInUse}
               setMarker={setMarker}

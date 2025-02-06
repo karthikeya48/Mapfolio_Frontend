@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { getAuth } from "firebase/auth";
 import { doc, addDoc, collection } from "firebase/firestore";
-import { db } from "../backend/firebase";
+import { db } from "../../backend/firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudArrowUp, faXmark } from "@fortawesome/free-solid-svg-icons";
 
