@@ -89,7 +89,7 @@ export default function MemoryDetailsMod() {
       <div className="max-w-7xl mx-auto p-6">
         <button
           onClick={() => navigate("/dashboard")}
-          className="text-blue-400 hover:text-blue-500 transition-all"
+          className="text-blue-400 fr hover:text-blue-500 transition-all"
         >
           Back to Dashboard
         </button>
