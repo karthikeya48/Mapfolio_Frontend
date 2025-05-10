@@ -66,13 +66,17 @@ Mapfolio uses the following technologies:
 
 ![image](https://github.com/user-attachments/assets/a758b922-0053-420a-828f-bc40fc8131e9)
 
-![image](https://github.com/user-attachments/assets/54988b02-e56a-4b6f-beff-6b2a93d2ca10)
-
 ![image](https://github.com/user-attachments/assets/2a9f9464-4091-482d-a379-10a7013a4b62)
 
 ![image](https://github.com/user-attachments/assets/ecc229a3-98b7-44e2-9eaa-eab1fbb9bfc3)
 
 ![image](https://github.com/user-attachments/assets/6107ebdf-cbcc-4a73-bcb4-b1979b38e70a)
+
+![image](https://github.com/user-attachments/assets/ff1befd7-9743-4a9c-a474-6209fc483d77)
+
+![image](https://github.com/user-attachments/assets/58db5ec8-4ceb-4ace-8762-c0fadbe4d626)
+![image](https://github.com/user-attachments/assets/b8d54762-19c9-4449-85ca-5e93b18cb80a)
+
 
 ![image](https://github.com/user-attachments/assets/0bc7031b-bb78-4014-b329-77a98c0453ec)
 
