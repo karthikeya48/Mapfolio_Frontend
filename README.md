@@ -15,12 +15,7 @@ Mapfolio is an interactive travel memory platform where users can mark places th
 1. [Project Overview](#project-overview)
 2. [Tech Stack](#tech-stack)
 3. [Features](#features)
-4. [Installation](#installation)
-5. [Usage](#usage)
-6. [Uploading Images](#uploading-images)
-7. [Future Plans](#future-plans)
-8. [Contributing](#contributing)
-9. [License](#license)
+4. [Pages](#pages)
 
 ---
 
