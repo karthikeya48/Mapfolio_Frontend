@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import useMemory, { MemoryProvider } from "../../Context/MemoryContext.jsx";
 import { image } from "@cloudinary/url-gen/qualifiers/source";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { auth, db } from "../../backend/firebase";
 
 export default function MemoryDetailsMod() {
   const navigate = useNavigate();
@@ -14,8 +17,8 @@ export default function MemoryDetailsMod() {
   const [currentCoverImageIndex, setCurrentCoverImageIndex] = useState(0);
   const [newImage, setNewImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null); // For image preview
-  const { updateMemory, deleteMemory } = useMemory();
-  console.log(updateMemory);
+  // const { updateMemory, deleteMemory } = useMemory();
+  // console.log(updateMemory);
   const upload_preset = import.meta.env.VITE_UPLOAD_PRESET;
   const cloud_name = import.meta.env.VITE_CLOUD_NAME;
 
@@ -30,6 +33,18 @@ export default function MemoryDetailsMod() {
       return () => clearInterval(intervalId);
     }
   }, [memory]);
+
+  const handleDelete = async (memoryid) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const memoryRef = doc(db, "users", user.uid, "trips", memoryid);
+    try {
+      await deleteDoc(memoryRef);
+      console.log(`Memory with ID ${memoryid} deleted successfully.`);
+    } catch (error) {
+      console.error("Error deleting memory:", error);
+    }
+  };
 
   const addImageToMemory = async (memoryId, image) => {
     try {
@@ -71,6 +86,28 @@ export default function MemoryDetailsMod() {
       setNewImage(null);
       console.log("added");
       setPreviewImage(null); // Clear preview after upload
+    }
+  };
+
+  const updateMemory = async (memoryId, notes, title, images) => {
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("User not authenticated");
+      return;
+    }
+
+    const memoryRef = doc(db, "users", user.uid, "trips", memoryId);
+
+    try {
+      await updateDoc(memoryRef, {
+        notes,
+        name: title,
+        images,
+        updatedAt: new Date(),
+      });
+      console.log("Memory updated successfully.");
+    } catch (error) {
+      console.error("Error updating memory:", error);
     }
   };
 
@@ -200,12 +237,16 @@ export default function MemoryDetailsMod() {
         </div>
 
         <button
-          onClick={() => {
+          onClick={async () => {
             const isConfirmed = window.confirm(
               "Are you sure you want to delete this memory?"
             );
             if (isConfirmed) {
-              deleteMemory(memory.id);
+              // console.log("Confirmeds");
+              // console.log(deleteMemory);
+              // deleteMemory(memory.id);
+              handleDelete(memory.id);
+              // console.log("call overed");
               navigate("/dashboard");
             }
           }}

@@ -40,6 +40,7 @@ function MyMap() {
 
   useEffect(() => {
     // Check if the user has seen the login message already
+    console.log(user.photoURL);
     const hasSeenLoginMessage = localStorage.getItem("seen");
 
     if (!hasSeenLoginMessage) {
@@ -133,16 +134,12 @@ function MyMap() {
           {!showFullScreen && (
             <div className="relative">
               <div className="absolute top-6 right-[80px] z-[1000]">
-                <button
-                  // () => navigate("/dashboard")
-                  onClick={() => {
-                    setOpen(!isOpen);
-                  }}
-                  style={{
-                    backgroundImage: `url(${user.photoURL || profileImg})`,
-                  }}
-                  className="w-10 h-10 bg-cover bg-center p-6 rounded-full shadow-md transition-transform transform hover:scale-110"
-                ></button>
+                <img
+                  src={user.photoURL || profileImg}
+                  alt="Profile"
+                  onClick={() => setOpen(!isOpen)}
+                  className="w-10 h-10 rounded-full shadow-md transition-transform transform hover:scale-110 cursor-pointer object-cover"
+                />
               </div>
               {isOpen ? (
                 <div className="absolute align right-[10px] top-[80px]   bg-gray-900 p-4 rounded-lg shadow-lg w-[200px] h-[150px] z-[1000]">

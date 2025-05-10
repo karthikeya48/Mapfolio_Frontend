@@ -14,8 +14,8 @@ export default function LocationFinder({
   useMapEvents({
     click: async (e) => {
       const { lat, lng } = e.latlng;
-      setMarker([lat, lng]);
       if (searchInUse) return;
+      setMarker([lat, lng]);
       try {
         const response = await axios.get(
           `https://api.opencagedata.com/geocode/v1/json`,

@@ -85,6 +85,7 @@ export default function DashboardMod() {
   }, [fetchMemories]);
 
   const handleSelect = (memory) => {
+    console.log("Selected", memory);
     navigate(`/memory/${memory.id}`, { state: { memory } });
   };
 

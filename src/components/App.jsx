@@ -4,6 +4,9 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import { useEffect } from "react";
+import { db } from "../backend/firebase.js";
+import { doc, collection, getDocs } from "firebase/firestore";
 import Auth from "../components/Auth/Auth.jsx";
 import Register from "../components/Auth/Register.jsx";
 import Home from "./Home/Home.jsx";
@@ -17,6 +20,21 @@ import MemoryDetailsMod from "./Dashboard/MemoryDetailsMod.jsx";
 import { MemoryProvider } from "../Context/MemoryContext.jsx";
 
 function App() {
+  useEffect(() => {
+    handler();
+  }, []);
+
+  const handler = async () => {
+    const collectionRef = await collection(db, "users");
+    const snapDoc = await getDocs(collectionRef);
+    console.log(snapDoc.docs);
+    snapDoc.docs.forEach((Doc) => {
+      console.log(Doc.data());
+    });
+    console.log("kar");
+    // console.log(snapDoc);
+  };
+
   const { user, loading } = useAuth();
 
   if (loading) return <p>Loading...</p>;

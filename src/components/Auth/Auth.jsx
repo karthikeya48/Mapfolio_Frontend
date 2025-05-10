@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signInWithGoogle } from "../../backend/firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../../backend/firebase";

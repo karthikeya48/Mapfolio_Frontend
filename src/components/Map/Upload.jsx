@@ -7,6 +7,7 @@ import { faCloudArrowUp, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import axios from "axios";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export default function Upload({
   formData,
@@ -19,7 +20,7 @@ export default function Upload({
   const [selectedImages, setSelectedImages] = useState([]); // state to store selected images
   const upload_preset = import.meta.env.VITE_UPLOAD_PRESET;
   const cloud_name = import.meta.env.VITE_CLOUD_NAME;
-
+  const navigate = useNavigate();
   const uploadImage = async (image) => {
     try {
       const formData = new FormData();
@@ -88,6 +89,16 @@ export default function Upload({
       return;
     }
 
+    const missingFields = [];
+    if (!formData.name) missingFields.push("Trip Name");
+    if (!formData.location) missingFields.push("Location");
+    if (!formData.notes) missingFields.push("Description");
+
+    if (missingFields.length > 0) {
+      alert(`Please fill the following field(s): ${missingFields.join(", ")}`);
+      return;
+    }
+
     const uid = user.uid;
     const uploadedImageUrls = [];
 
@@ -129,6 +140,7 @@ export default function Upload({
       console.log("Data added with trip ID:", tripRef.id);
       // handleAddMarker();
       alert("Upload successful!");
+      setShowAddLocation(false);
     } catch (error) {
       console.error("Error on submit:", error);
       alert("Upload failed!");
@@ -138,110 +150,140 @@ export default function Upload({
   };
 
   return (
-    <div className="mapfolio-form overflow-y-auto">
-      <div className="flex justify-between items-center mb-[20px]">
-        <p className="text-2xl"> Mapfolio </p>
+    <div className="bg-white p-8 rounded-xl shadow-lg max-w-md mx-auto space-y-6 border border-gray-100">
+      <div className="flex justify-between items-center">
+        <p className="text-4xl font-extrabold text-gray-800">
+          Create Your Trip
+        </p>
         <FontAwesomeIcon
           icon={faXmark}
           onClick={() => {
             setShowAddLocation(false);
             setShowFullScreen(0);
           }}
-          className="text-blue-600 text-2xl cursor-pointer"
+          className="text-red-600 text-3xl cursor-pointer hover:text-red-800 transition-colors"
         />
       </div>
+
       <form>
-        <div>
-          <label>Name the trip:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name || ""}
-            placeholder="Enter the Name the Trip"
-            onChange={handleInputChange}
-            className="rounded-md border mb-[10px] border-black"
-          />
-          <label>Location:</label>
-          <input
-            type="text"
-            name="location"
-            placeholder="Enter the Name the location"
-            value={formData.location || ""}
-            onChange={handleInputChange}
-            className="rounded-md border mb-[10px] border-black"
-          />
-        </div>
-        <div>
-          <label>Description:</label>
-          <textarea
-            placeholder="Write about the description of the trip"
-            name="notes"
-            value={formData.notes || ""}
-            onChange={handleInputChange}
-            className="max-h-[140px] rounded-md border mb-[10px] border-black"
-          />
-        </div>
-        <div>
-          <label>Images:</label>
-          <div
-            className={`mt-[10px] border-dashed border-2 rounded-md p-6 flex flex-col items-center justify-center text-center ${
-              isDragging
-                ? "border-blue-500 bg-blue-100"
-                : "border-gray-400 bg-gray-50"
-            }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            <FontAwesomeIcon
-              icon={faCloudArrowUp}
-              className="text-gray-400 text-4xl mb-2"
-            />
-            <p className="text-gray-500">
-              Drag and drop your photo here or{" "}
-              <label
-                htmlFor="fileInput"
-                className="text-blue-500 cursor-pointer underline"
-              >
-                click to browse
-              </label>
-            </p>
+        <div className="space-y-5">
+          {/* Trip Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Trip Name:
+            </label>
             <input
-              type="file"
-              id="fileInput"
-              className="hidden"
-              multiple
-              onChange={handleFileSelect}
+              type="text"
+              name="name"
+              value={formData.name || ""}
+              placeholder="Enter the name of your trip"
+              onChange={handleInputChange}
+              required
+              className="w-full p-4 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out hover:border-indigo-400"
             />
           </div>
-        </div>
 
-        {/* Display selected images */}
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold">Selected Images:</h3>
-          <div className="flex flex-wrap gap-4 mt-2">
-            {selectedImages.map((image, index) => (
-              <div key={index} className="relative">
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt={`Selected Image ${index + 1}`}
-                  className="h-20 w-20 object-cover rounded-md"
-                />
-              </div>
-            ))}
+          {/* Location */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Location:
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location || ""}
+              placeholder="Enter your trip's location"
+              onChange={handleInputChange}
+              required
+              className="w-full p-4 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out hover:border-indigo-400"
+            />
           </div>
-        </div>
 
-        <button
-          type="button"
-          onClick={handleSubmit}
-          disabled={uploading}
-          className={`mt-4 px-4 py-2 ${
-            uploading ? "bg-gray-500" : "bg-blue-500"
-          } text-white rounded-md hover:bg-green-600`}
-        >
-          {uploading ? "Uploading..." : "Submit"}
-        </button>
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Description:
+            </label>
+            <textarea
+              name="notes"
+              value={formData.notes || ""}
+              onChange={handleInputChange}
+              placeholder="Describe your trip..."
+              required
+              className="w-full p-4 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out hover:border-indigo-400"
+            />
+          </div>
+
+          {/* Image Upload */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Upload Images:
+            </label>
+            <div
+              className={`mt-2 border-2 border-dashed rounded-md p-8 flex flex-col items-center justify-center text-center transition-all duration-300 ease-in-out ${
+                isDragging
+                  ? "border-indigo-500 bg-indigo-50"
+                  : "border-gray-300 bg-gray-50"
+              }`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              <FontAwesomeIcon
+                icon={faCloudArrowUp}
+                className="text-gray-500 text-5xl mb-3 transition-all duration-300 ease-in-out"
+              />
+              <p className="text-gray-600">
+                Drag & drop your photos here or{" "}
+                <label
+                  htmlFor="fileInput"
+                  className="text-indigo-500 cursor-pointer hover:text-indigo-700 underline transition-all duration-300 ease-in-out"
+                >
+                  click to browse
+                </label>
+              </p>
+              <input
+                type="file"
+                id="fileInput"
+                className="hidden"
+                multiple
+                onChange={handleFileSelect}
+              />
+            </div>
+          </div>
+
+          {/* Display selected images */}
+          <div className="mt-6">
+            <h3 className="text-xl font-semibold text-gray-800">
+              Selected Images:
+            </h3>
+            <div className="flex flex-wrap gap-4 mt-3">
+              {selectedImages.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={`Selected Image ${index + 1}`}
+                    className="h-24 w-24 object-cover rounded-lg shadow-md transition-all duration-300 ease-in-out hover:scale-105"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={uploading}
+            className={`w-full py-4 text-white rounded-lg font-semibold ${
+              uploading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            } transition-all duration-300 ease-in-out`}
+          >
+            {uploading ? "Uploading..." : "Submit"}
+          </button>
+        </div>
       </form>
     </div>
   );

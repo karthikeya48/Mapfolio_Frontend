@@ -11,6 +11,8 @@ import {
 import "tailwindcss/tailwind.css";
 import { useNavigate } from "react-router-dom";
 import Profileinfo from "./Map/ProfileInfo";
+import useMemory from "../Context/MemoryContext";
+
 export default function Dashboard() {
   const [memories, setMemories] = useState([]);
   const [filteredMemories, setFilteredMemories] = useState([]);
@@ -19,6 +21,8 @@ export default function Dashboard() {
   const [isEditing, setIsEditing] = useState(false);
   const [currentCoverImageIndex, setCurrentCoverImageIndex] = useState(0); // Track current cover image
   const [searchTerm, setSearchTerm] = useState("");
+  const { setUpdateMemory, setDeleteMemory } = useMemory();
+
   // State for mobile number input
   // Flag for
   const user = getAuth().currentUser;
@@ -29,6 +33,7 @@ export default function Dashboard() {
     if (user) {
       const fetchMemories = async () => {
         try {
+          console.log("fetching memoreis");
           const tripsRef = collection(db, "users", user.uid, "trips");
           const tripSnapshot = await getDocs(tripsRef);
           const tripsList = tripSnapshot.docs.map((doc) => ({
@@ -152,6 +157,11 @@ export default function Dashboard() {
       console.error("Error deleting memory:", error);
     }
   };
+
+  useEffect(() => {
+    setUpdateMemory(() => updateMemory);
+    setDeleteMemory(() => deleteMemory);
+  }, [updateMemory, deleteMemory]);
 
   if (selectedMemory) {
     return (
