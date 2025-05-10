@@ -59,3 +59,7 @@ Mapfolio uses the following technologies:
 - **WhatsApp Integration** (Planned): Users will be able to send memories via WhatsApp, which will automatically be added to the user's profile.
 - **Cloud Image Storage**: All images are stored on Cloudinary for seamless access and security.
 ---
+
+
+![image](https://github.com/user-attachments/assets/a758b922-0053-420a-828f-bc40fc8131e9)
+
