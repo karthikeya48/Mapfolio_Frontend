@@ -85,35 +85,31 @@ function Search({ setMarker, setLocation, setFormData, setSearchInUse }) {
   };
 
   return (
-    <div className="relative w-[300px] z-[1000]">
+    <div className="relative w-full max-w-[350px] z-[1000]">
       <input
         type="text"
         value={inputValue}
         placeholder="Enter location"
         onChange={handleInputChange}
-        onFocus={() => {
-          setSearchInUse(1);
-        }}
-        onBlur={() => {
-          setSearchInUse(0);
-        }}
-        className="w-full h-[50px] rounded-3xl bg-white text-gray-800 font-bold p-[20px] pr-[60px] focus:outline-non"
+        onFocus={() => setSearchInUse(1)}
+        onBlur={() => setSearchInUse(0)}
+        className="w-full h-[48px] px-5 pr-12 rounded-full bg-white text-gray-900 font-semibold border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
       />
       <button
         onClick={handleSearch}
-        className="absolute top-[50%] right-[10px] transform -translate-y-1/2 w-[40px] h-[40px] flex items-center justify-center rounded-full bg-blue-500 text-white hover:bg-blue-700 transition duration-200"
+        className="absolute top-1/2 right-3 transform -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 transition duration-200 shadow"
       >
         <FontAwesomeIcon icon={faSearch} />
       </button>
 
       {/* Suggestions list */}
       {suggestions.length > 0 && (
-        <div className="absolute w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+        <div className="absolute w-full mt-2 bg-white border border-gray-300 rounded-xl shadow-lg z-10 overflow-hidden">
           {suggestions.map((suggestion, index) => (
             <div
               key={index}
               onClick={() => handleSuggestionClick(suggestion)}
-              className="p-[10px]  cursor-pointer hover:bg-gray-200"
+              className="px-4 py-3 text-gray-700 cursor-pointer hover:bg-gray-100 transition"
             >
               {suggestion.formatted}
             </div>

@@ -5,19 +5,18 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useEffect } from "react";
-import { db } from "../backend/firebase.js";
+import { db } from "./backend/firebase.js";
 import { doc, collection, getDocs } from "firebase/firestore";
-import Auth from "../components/Auth/Auth.jsx";
-import Register from "../components/Auth/Register.jsx";
-import Home from "./Home/Home.jsx";
-import Dashboard from "./Dashboard.jsx";
-import MyMap from "./Map/Mymap.jsx";
-import { useAuth } from "../components/Auth/Authprovider";
-import ProfileInfo from "./Map/ProfileInfo.jsx";
+import Auth from "./components/Auth/Auth.jsx";
+import Register from "./components/Auth/Register.jsx";
+import Home from "./components/Home/Home.jsx";
+import MyMap from "./components/Map/Mymap.jsx";
+import { useAuth } from "./components/Auth/Authprovider.jsx";
+import ProfileInfo from "./components/Map/ProfileInfo.jsx";
 import "leaflet/dist/leaflet.css";
-import DashboardMod from "./Dashboard/DashboardMod.jsx";
-import MemoryDetailsMod from "./Dashboard/MemoryDetailsMod.jsx";
-import { MemoryProvider } from "../Context/MemoryContext.jsx";
+import DashboardMod from "./components/Dashboard/DashboardMod.jsx";
+import MemoryDetailsMod from "./components/Dashboard/MemoryDetailsMod.jsx";
+import { MemoryProvider } from "./Context/MemoryContext.jsx";
 
 function App() {
   useEffect(() => {

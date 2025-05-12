@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../backend/firebase.js";
 // import "../../styles/MyMap.css";
+import profile from "../../assets/profile.png";
+
 import Upload from "./Upload.jsx";
 import Search from "./Search.jsx";
 
@@ -135,7 +137,7 @@ function MyMap() {
             <div className="relative">
               <div className="absolute top-6 right-[80px] z-[1000]">
                 <img
-                  src={user.photoURL || profileImg}
+                  src={profile}
                   alt="Profile"
                   onClick={() => setOpen(!isOpen)}
                   className="w-10 h-10 rounded-full shadow-md transition-transform transform hover:scale-110 cursor-pointer object-cover"

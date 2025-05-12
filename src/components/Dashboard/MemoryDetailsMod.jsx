@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import useMemory, { MemoryProvider } from "../../Context/MemoryContext.jsx";
+// import useMemory, { MemoryProvider } from "../../Context/MemoryContext.jsx";
 import { image } from "@cloudinary/url-gen/qualifiers/source";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -44,6 +44,12 @@ export default function MemoryDetailsMod() {
     } catch (error) {
       console.error("Error deleting memory:", error);
     }
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    memory.images.splice(indexToRemove, 1);
+    setCurrentCoverImageIndex(0);
+    updateMemory(memory.id, updatedNotes, updatedTitle, memory.images);
   };
 
   const addImageToMemory = async (memoryId, image) => {
@@ -148,7 +154,7 @@ export default function MemoryDetailsMod() {
           <img
             src={memory.images?.[currentCoverImageIndex] || ""}
             alt={memory.name}
-            className="w-full h-[70vh] object-cover rounded-xl shadow-xl"
+            className="h-[80vh] w-full object-cover rounded-xl shadow-xl"
           />
         </div>
 
@@ -200,13 +206,22 @@ export default function MemoryDetailsMod() {
         <h2 className="text-xl font-semibold mt-[10px]"> Images</h2>
 
         <div className="grid grid-cols-2 gap-4 mt-4">
-          {memory.images.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`image-${index}`}
-              className="w-full h-[400px] object-cover rounded-md"
-            />
+          {memory.images.map((imageUrl, index) => (
+            <div key={index} className="relative">
+              <img
+                src={imageUrl}
+                alt={`image-${index}`}
+                className="w-full h-[460px] object-cover rounded-md"
+              />
+              {isEditing && (
+                <button
+                  onClick={() => handleRemoveImage(index)}
+                  className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
           ))}
         </div>
 
