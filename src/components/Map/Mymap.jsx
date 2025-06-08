@@ -18,7 +18,7 @@ import profileImg from "../../assets/profile.png";
 import { useAuth } from "../Auth/Authprovider.jsx";
 
 import L from "leaflet";
-import locationmarker from "../../assets/location.png";
+import locationmarker from "../../assets/Location.png";
 
 const CustomIcon = new L.Icon({
   iconUrl: locationmarker,
