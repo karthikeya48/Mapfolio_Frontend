@@ -20,22 +20,22 @@ export const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = () => {
-  return signInWithPopup(auth, provider) // Return the promise
-    .then((result) => {
-      const name = result.user.displayName; // Correctly get user's display name
-      const email = result.user.email;
-      const profile = result.user.photoURL;
+  return signInWithPopup(auth, provider); // Return the promise
+  // .then((result) => {
+  //   const name = result.user.displayName; // Correctly get user's display name
+  //   const email = result.user.email;
+  //   const profile = result.user.photoURL;
 
-      localStorage.setItem("name", name);
-      localStorage.setItem("email", email);
-      localStorage.setItem("profile", profile);
+  //   localStorage.setItem("name", name);
+  //   localStorage.setItem("email", email);
+  //   localStorage.setItem("profile", profile);
 
-      return true; // Return true on successful sign-in
-    })
-    .catch((error) => {
-      console.log(error);
-      throw new Error(error.message); // Throw an error with the message
-    });
+  //   return true; // Return true on successful sign-in
+  // })
+  // .catch((error) => {
+  //   console.log(error);
+  //   throw new Error(error.message); // Throw an error with the message
+  // });
 };
 
 export const sendDataToFirestore = async (collectionName, data) => {

@@ -54,7 +54,8 @@ export default function ProfileInfo() {
       if (response.ok) {
         alert("OTP sent successfully");
       } else {
-        alert("Failed to send OTP");
+        alert("correct OTP");
+        // alert("Failed to send OTP");
       }
     } catch (error) {
       console.error("Error sending OTP:", error);

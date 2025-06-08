@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import SearchBarMod from "./SearchBarMod";
-import useMemory from "../../Context/MemoryContext";
+import MemoryCardMod from "./MemoryCardMod";
 
 export default function DashboardMod() {
   const [memories, setMemories] = useState(new Map());
@@ -84,10 +84,9 @@ export default function DashboardMod() {
     return () => observer.disconnect();
   }, [fetchMemories]);
 
-  const handleSelect = (memory) => {
-    console.log("Selected", memory);
-    navigate(`/memory/${memory.id}`, { state: { memory } });
-  };
+  // const handleSelect = (memory) => {
+  //   navigate(`/memory/${memory.id}`, { state: { memory } });
+  // };
 
   return (
     <div className="bg-black">
@@ -107,25 +106,8 @@ export default function DashboardMod() {
             <p className="text-center text-xl">No memories found</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {filteredMemories.map((memory) => (
-                <div
-                  key={memory.id}
-                  className="bg-gray-800 rounded-lg shadow-lg p-4"
-                >
-                  <img
-                    src={memory?.images?.[0]}
-                    alt={memory.name}
-                    className="w-full h-[200px] object-cover rounded-md mb-4"
-                  />
-                  <h3 className="text-lg font-semibold">{memory.name}</h3>
-                  <p className="text-sm text-gray-400">{memory.location}</p>
-                  <button
-                    onClick={() => handleSelect(memory)}
-                    className="mt-4 text-blue-500 hover:underline"
-                  >
-                    View Details
-                  </button>
-                </div>
+              {filteredMemories.map((memory, index) => (
+                <MemoryCardMod key={index} memory={memory} />
               ))}
             </div>
           )}

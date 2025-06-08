@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-// import useMemory, { MemoryProvider } from "../../Context/MemoryContext.jsx";
-import { image } from "@cloudinary/url-gen/qualifiers/source";
+// import { image } from "@cloudinary/url-gen/qualifiers/source";
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { auth, db } from "../../backend/firebase";
@@ -17,8 +16,7 @@ export default function MemoryDetailsMod() {
   const [currentCoverImageIndex, setCurrentCoverImageIndex] = useState(0);
   const [newImage, setNewImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null); // For image preview
-  // const { updateMemory, deleteMemory } = useMemory();
-  // console.log(updateMemory);
+
   const upload_preset = import.meta.env.VITE_UPLOAD_PRESET;
   const cloud_name = import.meta.env.VITE_CLOUD_NAME;
 
@@ -257,11 +255,7 @@ export default function MemoryDetailsMod() {
               "Are you sure you want to delete this memory?"
             );
             if (isConfirmed) {
-              // console.log("Confirmeds");
-              // console.log(deleteMemory);
-              // deleteMemory(memory.id);
               handleDelete(memory.id);
-              // console.log("call overed");
               navigate("/dashboard");
             }
           }}
