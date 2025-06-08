@@ -17,6 +17,16 @@ import "react-toastify/dist/ReactToastify.css";
 import profileImg from "../../assets/profile.png";
 import { useAuth } from "../Auth/Authprovider.jsx";
 
+import L from "leaflet";
+import locationmarker from "../../assets/location.png";
+
+const CustomIcon = new L.Icon({
+  iconUrl: locationmarker,
+  iconSize: [32, 45], // size of the icon
+  iconAnchor: [16, 45], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -45], // point from which the popup should open
+});
+
 function MyMap() {
   const [marker, setMarker] = useState(null);
   const [markers, setMarkers] = useState([]);
@@ -196,10 +206,11 @@ function MyMap() {
               setFormData={setFormData}
               setShowAddLocation={setShowAddLocation}
             />
-            {marker && <Marker position={marker}></Marker>}
+            {marker && <Marker position={marker} icon={CustomIcon}></Marker>}
             {markers.map((marker) => (
               <Marker
                 key={marker.id}
+                icon={CustomIcon}
                 position={[marker.latitude, marker.longitude]}
                 eventHandlers={{
                   mouseover: () => setHoveredMarker(marker),
